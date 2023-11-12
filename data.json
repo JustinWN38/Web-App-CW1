@@ -31,7 +31,7 @@
         "title": "Biology",
         "description": "The study of living organisms.",
         "location": "Essex",
-        "price": 4,
+        "price": 6,
         "image": "Images/Biology.png",
         "availableInventory": 5
     },
@@ -40,7 +40,7 @@
         "title": "Physics",
         "description": "The study of matter and the universe.",
         "location": "Essex",
-        "price": 4,
+        "price": 2,
         "image": "Images/Physics.png",
         "availableInventory": 3
     },

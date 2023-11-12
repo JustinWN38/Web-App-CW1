@@ -4,28 +4,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE,edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Lesson Shop</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <div id="app">
         <header>
             <h1>{{ sitename }}</h1>
-            <button @click="showCheckout" :disabled="cart.length === 0">
+            <button @click="toggleCheckout" :disabled="cart.length === 0">
                 {{ uniqueCartItemCount }}
                 <span class="fa fa-cart-plus"></span>
                 Checkout
             </button>
-            <button @click="showCheckout" :hidden="cart.length !== 0">
+            <button @click="toggleCheckout" :hidden="cart.length !== 0">
                 Show All Items
             </button>
-
-          
+            <p>Sort By:</p>
+            <button @click="sortProducts('price')">Price</button>
+            <button @click="sortProducts('title')">Name</button>
+            <button @click="sortProducts('availableInventory')">Availability</button>
+            <p></p>
+            <input type="checkbox" id="sortOrder" v-model="ascendingOrder">
+            <label for="sortOrder">Ascending</label>
         </header>
 
         <div v-show="showProduct">
             <div class="product-container">
-                <div class="product" v-for="product in products" :key="product.id">
+                <div class="product" v-for="product in sortedProducts" :key="product.id">
                     <figure>
                         <img :src="product.image" alt="Product Image">
                     </figure>
@@ -34,15 +39,15 @@
                     <p>Location: {{ product.location }}</p>
                     <p>Price: £{{ product.price }} </p>
                     <p>Available Inventory: {{ product.availableInventory }}</p>
+                    <h2 v-if="product.availableInventory === 0" class="inventory-message">
+                        All out!
+                    </h2>
+                    <h3 v-else-if="product.availableInventory <= 5" class="inventory-message">
+                        Only {{ product.availableInventory }} left!
+                    </h3>
                     <button @click="addToCart(product)" :disabled="product.availableInventory === 0">
                         Add to Cart
                     </button>
-                    <span v-if="product.availableInventory === 0" class="inventory-message">
-                        All out!
-                    </span>
-                    <span v-else-if="product.availableInventory <= 5" class="inventory-message">
-                        Only {{ product.availableInventory }} left!
-                    </span>
                 </div>
             </div>
         </div>
@@ -64,6 +69,17 @@
                     </div>
                 </ul>
                 <p>Total: £{{ getTotalPrice() }}</p>
+
+                <form @submit.prevent="submitForm">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" v-model="customerName" pattern="[A-Za-z]+" required>
+                    
+                    <label for="phoneNumber">Phone Number:</label>
+                    <input type="tel" id="phoneNumber" v-model="phoneNumber" pattern="[0-9]+" required>
+
+                    <button type="submit">Buy</button>
+                    <p v-if="orderCompleted">Order Successful!</p>
+                </form>
             </div>
         </div>
     </div>
@@ -71,32 +87,64 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
 
     <script type="module">
-        import JSON from './data.json' assert {type: 'json'}
+        import json from './data.json' assert {type: 'json'}
+        function getLessons(){
+            var sorted = json.sort((a, b) => {
+                let fa = a.title.toLowerCase(), fb = b.title.toLowerCase()
+          
+              if (fa < fb) {
+                return -1
+              }
+              if (fa > fb) {
+                return 1 
+              }
+              return 0
 
-        var webstore = new Vue({
+        });
+            return sorted;
+    }
+
+
+        new Vue({
             el: '#app',
             data: {
-                sitename: 'Lesson Purchaser',
-                products: JSON, 
-                cart: [], // Track unique cart items and their quantities
-                showProduct: true
+                sitename: 'Lesson Shop',
+                products: getLessons(), 
+                cart: [],
+                showProduct: true,
+                sortLessons: '',
+                customerName: '',
+                phoneNumber: '',
+                orderCompleted: false,
+                ascendingOrder: true,
             },
             computed: {
                 uniqueCartItemCount: function () {
                     return this.cart.length;
+                },
+                sortedProducts: function () {
+                    let sortedArray = [...this.products];
 
+                    if (this.sortLessons === 'price') {
+                        sortedArray.sort((a, b) => (this.ascendingOrder ? a.price - b.price : b.price - a.price));
+                    } else if (this.sortLessons === 'title') {
+                        sortedArray.sort((a, b) => (this.ascendingOrder ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)));
+                    } else if (this.sortLessons === 'availableInventory') {
+                        sortedArray.sort((a, b) => (this.ascendingOrder ? a.availableInventory - b.availableInventory : b.availableInventory - a.availableInventory));
+                    }
+
+                    return sortedArray;
                 },
             },
             methods: {
                 addToCart: function (selectedProduct) {
-                    // Check if the product is already in the cart
                     const cartItem = this.cart.find(item => item.productId === selectedProduct.id);
                     if (cartItem) {
                         cartItem.quantity++;
                     } else {
                         this.cart.push({ productId: selectedProduct.id, quantity: 1 });
                     }
-                    selectedProduct.availableInventory--; // Reduce available inventory by 1
+                    selectedProduct.availableInventory--;
                 },
                 removeFromCart: function (productId) {
                     const cartItem = this.cart.find(item => item.productId === productId);
@@ -107,12 +155,15 @@
                             this.cart.splice(cartItemIndex, 1);
                         }
                         const product = this.getProductById(productId);
-                        product.availableInventory++; // Readd the removed item back to the main page
+                        product.availableInventory++;
                     }
                 },
-                showCheckout: function () {
-                        this.showProduct = !this.showProduct;
-                    },
+                sortProducts: function (criteria) {
+                    this.sortLessons = this.sortLessons === criteria ? '' : criteria;
+                },
+                toggleCheckout: function () {
+                    this.showProduct = !this.showProduct;
+                },
                 getProductById: function (productId) {
                     return this.products.find(product => product.id === productId);
                 },
@@ -122,10 +173,19 @@
                         return total + (product.price * cartItem.quantity);
                     }, 0);
                 },
-
+                submitForm: function () {
+                    if (/^[A-Za-z ]+$/.test(this.customerName) && /^[0-9]+$/.test(this.phoneNumber)) {
+                        this.orderCompleted = true;
+                        console.log('Form submitted!');
+                        console.log('Name:', this.customerName);
+                        console.log('Phone Number:', this.phoneNumber);
+                    } else {
+                        alert('Please enter a valid name and phone number.');
+                    }
+                },
             },
         });
-        </script>
+    </script>
 </body>
 </html>
 
