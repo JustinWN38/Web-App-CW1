@@ -117,17 +117,23 @@
                         <h4>Total: £{{ getTotalPrice() }}</h4>
 
                         <form @submit.prevent="submitForm">
-                            <label for="name">Name:</label>
-                            <input type="text" id="name" v-model="customerName" pattern="[A-Za-z]+" required>
+                            <div class="form-group">
+                                <label class="form-text" for="name">Name:</label>
+                                <input class="form-control" type="text" id="name" v-model="customerName"
+                                    pattern="[A-Za-z]+" required>
 
-                            <label for="phoneNumber">Phone Number:</label>
-                            <input type="tel" id="phoneNumber" v-model="phoneNumber" pattern="[0-9]+" required>
+                                <label class="form-text" for="phoneNumber">Phone Number:</label>
+                                <input class="form-control" type="tel" id="phoneNumber" v-model="phoneNumber"
+                                    pattern="[0-9]+" required>
+                            </div>
+                            <button v-if="isBuyButtonVisible" type="submit" class="btn btn-primary">Place
+                                Order</button>
 
-                            <button v-if="isBuyButtonVisible" type="submit">Buy</button>
+                            <div class="alert alert-success" role="alert" v-if="orderCompleted">Thank You! Your order
+                                has been completed!</div>
 
-                            <p v-if="orderCompleted">Order Successful!</p>
                         </form>
-
+                        <p></p>
                     </div><!--checkout container-->
                 </div><!-- !showProduct -->
             </div><!-- row -->
