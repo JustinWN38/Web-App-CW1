@@ -1,116 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE,edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lesson Shop</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </head>
+
 <body>
     <div id="app">
-        <header>
-            <h1>{{ sitename }}</h1>
-            <button @click="toggleCheckout" :disabled="cart.length === 0">
-                {{ uniqueCartItemCount }}
-                <span class="fa fa-cart-plus"></span>
-                Checkout
-            </button>
-            <button @click="toggleCheckout" :hidden="cart.length !== 0">
-                Show All Items
-            </button>
-            <p>Sort By:</p>
-            <button @click="sortProducts('price')">Price</button>
-            <button @click="sortProducts('title')">Name</button>
-            <button @click="sortProducts('availableInventory')">Availability</button>
-            <p></p>
-            <input type="checkbox" id="sortOrder" v-model="ascendingOrder">
-            <label for="sortOrder">Ascending</label>
-        </header>
+        <div class="container container-fluid">
+            <div class="row">
+                <header>
+                    <h1>{{ sitename }}</h1>
 
-        <div v-show="showProduct">
-            <div class="product-container">
-                <div class="product" v-for="product in sortedProducts" :key="product.id">
-                    <figure>
-                        <img :src="product.image" alt="Product Image">
-                    </figure>
-                    <h3>{{ product.title }}</h3>
-                    <p v-html="product.description"></p>
-                    <p>Location: {{ product.location }}</p>
-                    <p>Price: £{{ product.price }} </p>
-                    <p>Available Inventory: {{ product.availableInventory }}</p>
-                    <h2 v-if="product.availableInventory === 0" class="inventory-message">
-                        All out!
-                    </h2>
-                    <h3 v-else-if="product.availableInventory <= 5" class="inventory-message">
-                        Only {{ product.availableInventory }} left!
-                    </h2>
-                    <button @click="addToCart(product)" :disabled="product.availableInventory === 0">
-                        Add to Cart
+                    <button type="button" class="btn btn-dark" @click="toggleCheckout" :disabled="cart.length === 0">
+                        {{ uniqueCartItemCount }}
+                        <span class="fa fa-cart-plus"></span>
+                        Checkout
                     </button>
-                </div>
-            </div>
-        </div>
+                    <button type="button" class="btn btn-secondary" @click="toggleCheckout" :hidden="cart.length !== 0">
+                        Show All Items
+                    </button>
+                    <span> Order By:
+                        <button type="button" class="btn btn-info" @click="sortProducts('price')">Price</button>
+                        <button type="button" class="btn btn-info" @click="sortProducts('title')">Name</button>
+                        <button type="button" class="btn btn-info"
+                            @click="sortProducts('availableInventory')">Availability</button>
 
-        <div v-show="!showProduct">
-            <div class="checkout-container">
-                <h2>Checkout</h2>
-                <ul>
-                    <div v-for="cartItem in cart" :key="cartItem.productId">
-                        <div>
-                            <img :src="getProductById(cartItem.productId).image" alt="Product Image">
-                            <h2>{{ getProductById(cartItem.productId).title }}</h2>
-                            <p>{{ getProductById(cartItem.productId).description }}</p>
-                            <p>Location: {{ getProductById(cartItem.productId).location }}</p>
-                            <p>Price: £{{ getProductById(cartItem.productId).price }}</p>
-                            <p>Quantity: {{ cartItem.quantity }}</p>
-                            <button @click="removeFromCart(cartItem.productId)">Remove Item</button>
+                        <input type="checkbox" id="sortOrder" v-model="ascendingOrder">
+                        <label for="sortOrder"> Ascending</label>
+                    </span>
+                    <p></p>
+                </header>
+            </div><!-- row-->
+            <div class="row">
+                <div v-show="showProduct">
+                    <div class="product-container">
+                        <div class="card-deck mb-4 text-center">
+                            <div class="product" v-for="product in sortedProducts" :key="product.id">
+                                <div class="card mp-4" style="width: 350px;">
+                                    <div class="card-header">
+                                        <h4 class="my-0 font-weight-normal">{{ product.title }}
+                                            <span v-if="product.availableInventory === 0"
+                                                class="inventory-message badge badge-danger">
+                                                All out!
+                                            </span>
+                                            <span v-else-if="product.availableInventory <= 5"
+                                                class="inventory-message badge badge-warning">
+                                                Only {{ product.availableInventory }} left!
+                                        </h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <figure>
+                                            <img :src="product.image" height="100px" alt="Product Image">
+                                        </figure>
+                                        <p v-html="product.description"></p>
+                                        <p>Location: {{ product.location }}</p>
+                                        <p>Price: £{{ product.price }} </p>
+                                        <p>Available Inventory: {{ product.availableInventory }}</p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-success" @click="addToCart(product)"
+                                            :disabled="product.availableInventory === 0">
+                                            Add to Cart
+                                        </button>
+                                    </div>
+                                </div><!-- card -->
+                            </div><!-- v-for -->
                         </div>
                     </div>
-                </ul>
-                <p>Total: £{{ getTotalPrice() }}</p>
+                </div><!-- showProduct-->
 
-                <form @submit.prevent="submitForm">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" v-model="customerName" pattern="[A-Za-z]+" required>
-                    
-                    <label for="phoneNumber">Phone Number:</label>
-                    <input type="tel" id="phoneNumber" v-model="phoneNumber" pattern="[0-9]+" required>
+                <div v-show="!showProduct">
+                    <div class="checkout-container">
+                        <h2>Checkout</h2>
+                        <div class="card-deck mb-4">
+                            <div v-for="cartItem in cart" :key="cartItem.productId">
+                                <div class="card mp-4" style="width: 350px;">
+                                    <div class="card-header text-center">
+                                        <h4 class="my-0 font-weight-normal">{{ getProductById(cartItem.productId).title
+                                            }}</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <figure>
+                                            <img :src="getProductById(cartItem.productId).image" height="50px"
+                                                alt="Product Image">
+                                        </figure>
+                                        <p>{{ getProductById(cartItem.productId).description }}</p>
+                                        <p>Location: {{ getProductById(cartItem.productId).location }}</p>
+                                        <p>Price Each: £{{ getProductById(cartItem.productId).price }}</p>
+                                        <p>Quantity Ordered: {{ cartItem.quantity }}</p>
+                                    </div>
 
-                    <button v-if="isBuyButtonVisible" type="submit">Buy</button>
+                                    <div class="card-footer text-center">
+                                        <button type="button" class="btn btn-success"
+                                            @click="removeFromCart(cartItem.productId)">Remove Item</button>
+                                    </div>
+                                </div><!-- card div -->
+                            </div><!-- v-for -->
+                        </div>
 
-                    <p v-if="orderCompleted">Order Successful!</p>
-                </form>
-            </div>
-        </div>
-    </div>
+                        <h4>Total: £{{ getTotalPrice() }}</h4>
 
+                        <form @submit.prevent="submitForm">
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" v-model="customerName" pattern="[A-Za-z]+" required>
+
+                            <label for="phoneNumber">Phone Number:</label>
+                            <input type="tel" id="phoneNumber" v-model="phoneNumber" pattern="[0-9]+" required>
+
+                            <button v-if="isBuyButtonVisible" type="submit">Buy</button>
+
+                            <p v-if="orderCompleted">Order Successful!</p>
+                        </form>
+
+                    </div><!--checkout container-->
+                </div><!-- !showProduct -->
+            </div><!-- row -->
+        </div><!-- container -->
+    </div> <!-- app div-->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-
     <script type="module">
         import json from './data.json' assert {type: 'json'}
-        function getLessons(){
+        function getLessons() {
             var sorted = json.sort((a, b) => {
                 let fa = a.title.toLowerCase(), fb = b.title.toLowerCase()
-          
-              if (fa < fb) {
-                return -1
-              }
-              if (fa > fb) {
-                return 1 
-              }
-              return 0
 
-        });
+                if (fa < fb) {
+                    return -1
+                }
+                if (fa > fb) {
+                    return 1
+                }
+                return 0
+
+            });
             return sorted;
-    }
+        }
 
 
-        new Vue({
+        var webstore = new Vue({
             el: '#app',
             data: {
                 sitename: 'Lesson Shop',
-                products: getLessons(), 
+                products: getLessons(),
                 cart: [],
                 showProduct: true,
                 sortLessons: '',
@@ -190,6 +237,7 @@
             },
         });
     </script>
-</body>
-</html>
 
+</body>
+
+</html>
