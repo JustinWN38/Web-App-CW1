@@ -14,7 +14,7 @@
         "description": "The study of words.",
         "location": "Manchester",
         "price": 12,
-        "image": "images/English.png",
+        "image": "Images/English.png",
         "availableInventory": 4
     },
     {
@@ -23,7 +23,7 @@
         "description": "The study of chemicals.",
         "location": "Essex",
         "price": 4,
-        "image": "images/Chemistry.png",
+        "image": "Images/Chemistry.png",
         "availableInventory": 6
     },
     {
@@ -32,7 +32,7 @@
         "description": "The study of living organisms.",
         "location": "Essex",
         "price": 4,
-        "image": "images/Biology.png",
+        "image": "Images/Biology.png",
         "availableInventory": 5
     },
     {
@@ -41,7 +41,7 @@
         "description": "The study of matter and the universe.",
         "location": "Essex",
         "price": 4,
-        "image": "images/Physics.png",
+        "image": "Images/Physics.png",
         "availableInventory": 3
     },
     {
@@ -50,7 +50,7 @@
         "description": "The study of computation.",
         "location": "Birmingham",
         "price": 12,
-        "image": "images/Computer.png",
+        "image": "Images/Computer.png",
         "availableInventory": 9
     },
     {
@@ -59,7 +59,7 @@
         "description": "The study of acting.",
         "location": "Watford",
         "price": 8,
-        "image": "images/Drama.png",
+        "image": "Images/Drama.png",
         "availableInventory": 2
     },
     {
@@ -68,7 +68,7 @@
         "description": "The study of the brain.",
         "location": "Liverpool",
         "price": 6,
-        "image": "images/Neurology.png",
+        "image": "Images/Neurology.png",
         "availableInventory": 1
     },
     {
@@ -77,7 +77,7 @@
         "description": "The study of video games.",
         "location": "Colindale",
         "price": 7,
-        "image": "images/Games.png",
+        "image": "Images/Games.png",
         "availableInventory": 15
     },
     {
@@ -86,7 +86,7 @@
         "description": "The study of networking and data security.",
         "location": "Hendon",
         "price": 25,
-        "image": "images/Networking.png",
+        "image": "Images/Networking.png",
         "availableInventory": 2
     }
 ]
