@@ -44,7 +44,7 @@
                     </h2>
                     <h3 v-else-if="product.availableInventory <= 5" class="inventory-message">
                         Only {{ product.availableInventory }} left!
-                    </h3>
+                    </h2>
                     <button @click="addToCart(product)" :disabled="product.availableInventory === 0">
                         Add to Cart
                     </button>
@@ -77,7 +77,8 @@
                     <label for="phoneNumber">Phone Number:</label>
                     <input type="tel" id="phoneNumber" v-model="phoneNumber" pattern="[0-9]+" required>
 
-                    <button type="submit">Buy</button>
+                    <button v-if="isBuyButtonVisible" type="submit">Buy</button>
+
                     <p v-if="orderCompleted">Order Successful!</p>
                 </form>
             </div>
@@ -135,6 +136,9 @@
 
                     return sortedArray;
                 },
+                isBuyButtonVisible: function () {
+                    return this.customerName.trim() !== '' && this.phoneNumber.trim() !== '';
+                }
             },
             methods: {
                 addToCart: function (selectedProduct) {
