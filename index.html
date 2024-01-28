@@ -39,7 +39,7 @@
                         <button type="button" class="btn btn-info" @click="sortProducts('price')">Price</button>
                         <button type="button" class="btn btn-info" @click="sortProducts('title')">Name</button>
                         <button type="button" class="btn btn-info"
-                            @click="sortProducts('availableInventory')">Availability</button>
+                            @click="sortProducts('space')">Availability</button>
 
                         <input type="checkbox" id="sortOrder" v-model="ascendingOrder">
                         <label for="sortOrder"> Ascending</label>
@@ -55,13 +55,13 @@
                                 <div class="card mp-4" style="width: 350px;">
                                     <div class="card-header">
                                         <h4 class="my-0 font-weight-normal">{{ product.title }}
-                                            <span v-if="product.availableInventory === 0"
+                                            <span v-if="product.space === 0"
                                                 class="inventory-message badge badge-danger">
                                                 All out!
                                             </span>
-                                            <span v-else-if="product.availableInventory <= 5"
+                                            <span v-else-if="product.space <= 5"
                                                 class="inventory-message badge badge-warning">
-                                                Only {{ product.availableInventory }} left!
+                                                Only {{ product.space }} left!
                                         </h4>
                                     </div>
                                     <div class="card-body">
@@ -71,11 +71,11 @@
                                         <p v-html="product.description"></p>
                                         <p>Location: {{ product.location }}</p>
                                         <p>Price: £{{ product.price }} </p>
-                                        <p>Available Inventory: {{ product.availableInventory }}</p>
+                                        <p>Available Inventory: {{ product.space }}</p>
                                     </div>
                                     <div class="card-footer">
                                         <button type="button" class="btn btn-success" @click="addToCart(product)"
-                                            :disabled="product.availableInventory === 0">
+                                            :disabled="product.space === 0">
                                             Add to Cart
                                         </button>
                                     </div>
@@ -141,29 +141,12 @@
     </div> <!-- app div-->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
     <script type="module">
-        import json from './data.json' assert {type: 'json'}
-        function getLessons() {
-            var sorted = json.sort((a, b) => {
-                let fa = a.title.toLowerCase(), fb = b.title.toLowerCase()
-
-                if (fa < fb) {
-                    return -1
-                }
-                if (fa > fb) {
-                    return 1
-                }
-                return 0
-
-            });
-            return sorted;
-        }
-
 
         var webstore = new Vue({
             el: '#app',
             data: {
                 sitename: 'Lesson Shop',
-                products: getLessons(),
+                products: [],
                 cart: [],
                 showProduct: true,
                 sortLessons: '',
@@ -171,6 +154,9 @@
                 phoneNumber: '',
                 orderCompleted: false,
                 ascendingOrder: true,
+            },
+            mounted() {
+                this.fetchProducts();
             },
             computed: {
                 uniqueCartItemCount: function () {
@@ -183,8 +169,8 @@
                         sortedArray.sort((a, b) => (this.ascendingOrder ? a.price - b.price : b.price - a.price));
                     } else if (this.sortLessons === 'title') {
                         sortedArray.sort((a, b) => (this.ascendingOrder ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)));
-                    } else if (this.sortLessons === 'availableInventory') {
-                        sortedArray.sort((a, b) => (this.ascendingOrder ? a.availableInventory - b.availableInventory : b.availableInventory - a.availableInventory));
+                    } else if (this.sortLessons === 'space') {
+                        sortedArray.sort((a, b) => (this.ascendingOrder ? a.space - b.space : b.space - a.space));
                     }
 
                     return sortedArray;
@@ -194,6 +180,16 @@
                 }
             },
             methods: {
+            fetchProducts() {
+                fetch('http://cw2app-env.eba-8uzggs2q.eu-west-2.elasticbeanstalk.com/collections/products')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.products = data;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching products:', error);
+                    });
+            },
                 addToCart: function (selectedProduct) {
                     const cartItem = this.cart.find(item => item.productId === selectedProduct.id);
                     if (cartItem) {
@@ -201,7 +197,7 @@
                     } else {
                         this.cart.push({ productId: selectedProduct.id, quantity: 1 });
                     }
-                    selectedProduct.availableInventory--;
+                    selectedProduct.space--;
                 },
                 removeFromCart: function (productId) {
                     const cartItem = this.cart.find(item => item.productId === productId);
@@ -212,7 +208,7 @@
                             this.cart.splice(cartItemIndex, 1);
                         }
                         const product = this.getProductById(productId);
-                        product.availableInventory++;
+                        product.space++;
                     }
                 },
                 sortProducts: function (criteria) {
@@ -240,6 +236,7 @@
                         alert('Please enter a valid name and phone number.');
                     }
                 },
+                
             },
         });
     </script>
