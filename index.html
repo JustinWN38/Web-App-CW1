@@ -18,6 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+	<link rel="manifest" href="lessonShop.webmanifest">
 </head>
 
 <body style="background-color:thistle">
@@ -140,48 +141,49 @@
         </div><!-- container -->
     </div> <!-- app div-->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-    <script type="module">
+ <script type="module">
 
-        var webstore = new Vue({
-            el: '#app',
-            data: {
-                sitename: 'Lesson Shop',
-                products: [],
-                cart: [],
-                showProduct: true,
-                sortLessons: '',
-                customerName: '',
-                phoneNumber: '',
-                orderCompleted: false,
-                ascendingOrder: true,
+    var webstore = new Vue({
+        el: '#app',
+        data: {
+            sitename: 'Lesson Shop',
+            products: [],
+            cart: [],
+            showProduct: true,
+            sortLessons: '',
+            customerName: '',
+            phoneNumber: '',
+            orderCompleted: false,
+            ascendingOrder: true,
+        },
+        mounted() {
+            this.fetchProducts();
+        },
+
+        computed: {
+            uniqueCartItemCount: function () {
+                return this.cart.length;
             },
-            mounted() {
-                this.fetchProducts();
-            },
-            computed: {
-                uniqueCartItemCount: function () {
-                    return this.cart.length;
-                },
-                sortedProducts: function () {
-                    let sortedArray = [...this.products];
+            sortedProducts: function () {
+                let sortedArray = [...this.products];
 
-                    if (this.sortLessons === 'price') {
-                        sortedArray.sort((a, b) => (this.ascendingOrder ? a.price - b.price : b.price - a.price));
-                    } else if (this.sortLessons === 'title') {
-                        sortedArray.sort((a, b) => (this.ascendingOrder ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)));
-                    } else if (this.sortLessons === 'space') {
-                        sortedArray.sort((a, b) => (this.ascendingOrder ? a.space - b.space : b.space - a.space));
-                    }
-
-                    return sortedArray;
-                },
-                isBuyButtonVisible: function () {
-                    return this.customerName.trim() !== '' && this.phoneNumber.trim() !== '';
+                if (this.sortLessons === 'price') {
+                    sortedArray.sort((a, b) => (this.ascendingOrder ? a.price - b.price : b.price - a.price));
+                } else if (this.sortLessons === 'title') {
+                    sortedArray.sort((a, b) => (this.ascendingOrder ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)));
+                } else if (this.sortLessons === 'space') {
+                    sortedArray.sort((a, b) => (this.ascendingOrder ? a.space - b.space : b.space - a.space));
                 }
+
+                return sortedArray;
             },
-            methods: {
+            isBuyButtonVisible: function () {
+                return this.customerName.trim() !== '' && this.phoneNumber.trim() !== '';
+            }
+        },
+        methods: {
             fetchProducts() {
-                fetch('https://cw2app-env.eba-8uzggs2q.eu-west-2.elasticbeanstalk.com/collections/products')
+                fetch('http://cw2app-env.eba-8uzggs2q.eu-west-2.elasticbeanstalk.com/collections/products')
                     .then(response => response.json())
                     .then(data => {
                         this.products = data;
@@ -190,56 +192,60 @@
                         console.error('Error fetching products:', error);
                     });
             },
-                addToCart: function (selectedProduct) {
-                    const cartItem = this.cart.find(item => item.productId === selectedProduct.id);
-                    if (cartItem) {
-                        cartItem.quantity++;
-                    } else {
-                        this.cart.push({ productId: selectedProduct.id, quantity: 1 });
-                    }
-                    selectedProduct.space--;
-                },
-                removeFromCart: function (productId) {
-                    const cartItem = this.cart.find(item => item.productId === productId);
-                    if (cartItem) {
-                        cartItem.quantity--;
-                        if (cartItem.quantity === 0) {
-                            const cartItemIndex = this.cart.indexOf(cartItem);
-                            this.cart.splice(cartItemIndex, 1);
-                        }
-                        const product = this.getProductById(productId);
-                        product.space++;
-                    }
-                },
-                sortProducts: function (criteria) {
-                    this.sortLessons = this.sortLessons === criteria ? '' : criteria;
-                },
-                toggleCheckout: function () {
-                    this.showProduct = !this.showProduct;
-                },
-                getProductById: function (productId) {
-                    return this.products.find(product => product.id === productId);
-                },
-                getTotalPrice: function () {
-                    return this.cart.reduce((total, cartItem) => {
-                        const product = this.getProductById(cartItem.productId);
-                        return total + (product.price * cartItem.quantity);
-                    }, 0);
-                },
-                submitForm: function () {
-                    if (/^[A-Za-z ]+$/.test(this.customerName) && /^[0-9]+$/.test(this.phoneNumber)) {
-                        this.orderCompleted = true;
-                        console.log('Form submitted!');
-                        console.log('Name:', this.customerName);
-                        console.log('Phone Number:', this.phoneNumber);
-                    } else {
-                        alert('Please enter a valid name and phone number.');
-                    }
-                },
-                
+            addToCart: function (selectedProduct) {
+                const cartItem = this.cart.find(item => item.productId === selectedProduct.id);
+                if (cartItem) {
+                    cartItem.quantity++;
+                } else {
+                    this.cart.push({ productId: selectedProduct.id, quantity: 1 });
+                }
+                selectedProduct.space--;
             },
-        });
-    </script>
+            removeFromCart: function (productId) {
+                const cartItem = this.cart.find(item => item.productId === productId);
+                if (cartItem) {
+                    cartItem.quantity--;
+                    if (cartItem.quantity === 0) {
+                        const cartItemIndex = this.cart.indexOf(cartItem);
+                        this.cart.splice(cartItemIndex, 1);
+                    }
+                    const product = this.getProductById(productId);
+                    product.space++;
+                }
+            },
+            sortProducts: function (criteria) {
+                this.sortLessons = this.sortLessons === criteria ? '' : criteria;
+            },
+            toggleCheckout: function () {
+                this.showProduct = !this.showProduct;
+            },
+            getProductById: function (productId) {
+                return this.products.find(product => product.id === productId);
+            },
+            getTotalPrice: function () {
+                return this.cart.reduce((total, cartItem) => {
+                    const product = this.getProductById(cartItem.productId);
+                    return total + (product.price * cartItem.quantity);
+                }, 0);
+            },
+            submitForm: function () {
+                if (/^[A-Za-z ]+$/.test(this.customerName) && /^[0-9]+$/.test(this.phoneNumber)) {
+                    this.orderCompleted = true;
+                    console.log('Form submitted!');
+                    console.log('Name:', this.customerName);
+                    console.log('Phone Number:', this.phoneNumber);
+                } else {
+                    alert('Please enter a valid name and phone number.');
+                }
+            }
+        },
+        created: function () {
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.register("service-worker.js");
+            }
+        },
+    });
+</script>
 
 </body>
 

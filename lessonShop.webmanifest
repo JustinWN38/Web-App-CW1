@@ -1,0 +1,26 @@
+{
+  "name": "My Lesson Shop PWA",
+  "short_name": "LessonShop",
+  "description": "My online lesson shop",
+  "icons": [
+    {
+      "src": "images/icon1.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "images/icon2.png",
+      "sizes": "973x818",
+      "form_factor": "wide"
+    },
+    {
+      "src": "images/mobileScreenshot.png",
+      "sizes": "702x892"
+    }
+  ],
+  "start_url": "index.html",
+  "display": "fullscreen",
+  "background_color": "#FF5733"
+}
