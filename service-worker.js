@@ -1,4 +1,4 @@
-var cacheName = "LessonShop";
+var cacheName = "LessonShop-v1";
 var cacheFiles = [
   "index.html",
   "Images/Networking.png",
@@ -11,6 +11,9 @@ var cacheFiles = [
   "Images/English.png",
   "Images/Games.png",
   "Images/Maths.png",
+  "Images/icon1.png",
+  "Images/icon2.png"
+
 ];
 
 self.addEventListener("install", function (e) {
