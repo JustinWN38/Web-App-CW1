@@ -13,10 +13,6 @@ var cacheFiles = [
   "Images/Maths.png",
 ];
 
-
-navigator.serviceWorker.register("/service-worker.js", { scope: "/" });
-
-
 self.addEventListener("install", function (e) {
   console.log("[Service Worker] Install");
   e.waitUntil(
