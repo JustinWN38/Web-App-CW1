@@ -10,17 +10,12 @@
         "purpose": "any"
     },
     {
-        "src": "images/icon3.png",
+        "src": "images/icon2.png",
         "sizes": "512x512",
         "type": "image/png"
     }
 ],
   "screenshots": [
-    {
-      "src": "images/icon2.png",
-      "sizes": "973x818",
-      "form_factor": "wide"
-    },
     {
       "src": "images/mobileScreenshot.png",
       "sizes": "702x892"
