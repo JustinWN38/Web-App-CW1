@@ -1,7 +1,6 @@
 var cacheName = "LessonShop";
 var cacheFiles = [
   "index.html",
-  // "products.js", // Uncomment this line if you have a products.js file
   "Images/Networking.png",
   "Images/Neurology.png",
   "Images/Physics.png",
@@ -31,12 +30,17 @@ self.addEventListener("fetch", function (e) {
       return (
         r ||
         fetch(e.request).then(function (response) {
+          if (!response || response.status !== 200 || response.type !== 'basic') {
+            console.error("[Service Worker] Fetch failed for: " + e.request.url);
+            return response;
+          }
+
           return caches.open(cacheName).then(function (cache) {
-            cache.put(e.request, response.clone());
             console.log(
               "[Service Worker] Resource fetched and saved in the cache for: " +
                 e.request.url
             );
+            cache.put(e.request, response.clone());
             return response;
           });
         })
