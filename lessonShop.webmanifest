@@ -4,20 +4,20 @@
   "description": "My online lesson shop",
   "icons": [
     {
-        "src": "images/icon1.png",
+        "src": "Images/icon1.png",
         "sizes": "32x32",
-        "type": "image/png",
+        "type": "Image/png",
         "purpose": "any"
     },
     {
-        "src": "images/icon2.png",
+        "src": "Images/icon2.png",
         "sizes": "512x512",
-        "type": "image/png"
+        "type": "Image/png"
     }
 ],
   "screenshots": [
     {
-      "src": "images/mobileScreenshot.png",
+      "src": "Images/mobileScreenshot.png",
       "sizes": "702x892"
     }
   ],
