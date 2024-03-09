@@ -14,6 +14,7 @@ var cacheFiles = [
  "Images/Maths.png",
  "Images/icon1.png",
  "Images/icon2.png",
+ "Images/mobileScreenshot.png",
 ];
 
 self.addEventListener("install", function(e) {
