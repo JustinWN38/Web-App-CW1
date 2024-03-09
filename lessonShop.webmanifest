@@ -21,7 +21,7 @@
       "sizes": "702x892"
     }
   ],
-  "start_url": "index.html",
+  "start_url": "../index.html",
   "display": "fullscreen",
   "background_color": "#FF5733"
 }
