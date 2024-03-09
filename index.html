@@ -185,7 +185,12 @@
         methods: {
             fetchProducts() {
                 fetch('https://cw2app-env.eba-8uzggs2q.eu-west-2.elasticbeanstalk.com/collections/products')
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
                     .then(data => {
                         this.products = data;
                     })
@@ -193,6 +198,7 @@
                         console.error('Error fetching products:', error);
                     });
             },
+
             addToCart: function (selectedProduct) {
                 const cartItem = this.cart.find(item => item.productId === selectedProduct.id);
                 if (cartItem) {
