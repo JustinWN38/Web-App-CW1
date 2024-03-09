@@ -12,9 +12,6 @@ var cacheFiles = [
  "Images/English.png",
  "Images/Games.png",
  "Images/Maths.png",
- "Images/icon1.png",
- "Images/icon2.png",
- "Images/mobileScreenshot.png",
 ];
 
 self.addEventListener("install", function(e) {
@@ -25,7 +22,7 @@ self.addEventListener("install", function(e) {
 			return cache.addAll(cacheFiles);
 		})
 	);
-});
+})
 
 self.addEventListener("fetch", function(e) {
 	e.respondWith(
