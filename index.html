@@ -136,7 +136,7 @@
     </div> <!-- app div-->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
     <script type="module">
-        import localjson from '/data.json' assert {type: 'json'}
+        import localjson from 'https://justinwn38.github.io/Web-App-CW1/data.json' assert {type: 'json'}
 
     var webstore = new Vue({
         el: '#app',
@@ -178,6 +178,7 @@
         },
         methods: {
             fetchProducts() {
+                /*
                 fetch('https://cw2app-env.eba-8uzggs2q.eu-west-2.elasticbeanstalk.com/collections/products')
                     .then(response => {
                         if (!response.ok) {
@@ -191,6 +192,7 @@
                     .catch(error => {
                         console.error('Error fetching products:', error);
                     });
+                    */
                return localjson;
             },
             
