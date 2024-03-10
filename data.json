@@ -1,92 +1,102 @@
-  [
-     {
-        "id": 1001,
+[
+    {
+        "_id": "65b6657e601ca0f9235b9360",
+        "id": 1,
         "title": "Maths",
         "description": "The study of numbers.",
         "location": "London",
         "price": 5,
         "image": "Images/Maths.png",
-        "availableInventory": 8
+        "space": 8
     },
     {
-        "id": 1002,
+        "_id": "65b6657e601ca0f9235b9361",
+        "id": 2,
         "title": "English",
         "description": "The study of words.",
         "location": "Manchester",
         "price": 12,
         "image": "Images/English.png",
-        "availableInventory": 4
+        "space": 4
     },
     {
-        "id": 1003,
+        "_id": "65b6657e601ca0f9235b9362",
+        "id": 3,
         "title": "Chemistry",
         "description": "The study of chemicals.",
         "location": "Essex",
         "price": 4,
         "image": "Images/Chemistry.png",
-        "availableInventory": 6
+        "space": 6
     },
     {
-        "id": 1004,
+        "_id": "65b6657e601ca0f9235b9363",
+        "id": "4",
         "title": "Biology",
         "description": "The study of living organisms.",
         "location": "Essex",
-        "price": 6,
+        "price": "6",
         "image": "Images/Biology.png",
-        "availableInventory": 5
+        "space": 5
     },
     {
-        "id": 1005,
+        "_id": "65b6657e601ca0f9235b9364",
+        "id": 5,
         "title": "Physics",
         "description": "The study of matter and the universe.",
         "location": "Essex",
         "price": 2,
         "image": "Images/Physics.png",
-        "availableInventory": 3
+        "space": 3
     },
     {
-        "id": 1006,
+        "_id": "65b6657e601ca0f9235b9365",
+        "id": 6,
         "title": "Computer Science",
         "description": "The study of computation.",
         "location": "Birmingham",
         "price": 12,
         "image": "Images/Computer.png",
-        "availableInventory": 9
+        "space": 9
     },
     {
-        "id": 1007,
+        "_id": "65b6657e601ca0f9235b9366",
+        "id": 7,
         "title": "Drama",
         "description": "The study of acting.",
         "location": "Watford",
         "price": 8,
         "image": "Images/Drama.png",
-        "availableInventory": 2
+        "space": 2
     },
     {
-        "id": 1008,
+        "_id": "65b6657e601ca0f9235b9367",
+        "id": 8,
         "title": "Neurology",
         "description": "The study of the brain.",
         "location": "Liverpool",
         "price": 6,
         "image": "Images/Neurology.png",
-        "availableInventory": 1
+        "space": 1
     },
     {
-        "id": 1009,
-        "title": "Games Design",
+        "_id": "65b6657e601ca0f9235b9368",
+        "id": 9,
+        "title": "Game Design",
         "description": "The study of video games.",
         "location": "Colindale",
         "price": 7,
         "image": "Images/Games.png",
-        "availableInventory": 15
+        "space": 15
     },
     {
-        "id": 1010,
+        "_id": "65b6657e601ca0f9235b9369",
+        "id": 10,
         "title": "Network Security",
         "description": "The study of networking and data security.",
-        "location": "Hendon",
+        "location": "Essex",
         "price": 25,
         "image": "Images/Networking.png",
-        "availableInventory": 2
+        "space": 2
     }
 ]

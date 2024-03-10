@@ -136,6 +136,7 @@
     </div> <!-- app div-->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
     <script type="module">
+        import localjson from '/data.json' assert {type: 'json'}
 
     var webstore = new Vue({
         el: '#app',
@@ -190,8 +191,9 @@
                     .catch(error => {
                         console.error('Error fetching products:', error);
                     });
+               return localjson;
             },
-
+            
 
             addToCart: function (selectedProduct) {
                 const cartItem = this.cart.find(item => item.productId === selectedProduct.id);
